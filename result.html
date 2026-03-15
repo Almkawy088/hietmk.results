@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>نتيجة الطالب</title>
+
+<style>
+
+body{
+font-family:Tahoma;
+background:#eef2f7;
+text-align:center;
+}
+
+.header{
+background:#003366;
+color:white;
+padding:20px;
+font-size:22px;
+}
+
+.logo{
+font-size:40px;
+margin-top:10px;
+}
+
+.info{
+margin-top:30px;
+font-size:18px;
+}
+
+table{
+margin:auto;
+margin-top:20px;
+border-collapse:collapse;
+width:70%;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:12px;
+}
+
+th{
+background:#003366;
+color:white;
+}
+
+#gpa{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+}
+
+.printBtn{
+margin-top:20px;
+padding:12px 25px;
+font-size:18px;
+background:#0a7d34;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="logo">🎓</div>
+المعهد العالي للهندسة والتكنولوجيا بالمحلة الكبرى
+</div>
+
+<div class="info">
+
+<div id="seatNo"></div>
+<h2 id="name"></h2>
+<h3 id="code"></h3>
+
+</div>
+
+<table>
+
+<tr>
+<th>المادة</th>
+<th>التقدير</th>
+</tr>
+
+<tbody id="grades"></tbody>
+
+</table>
+
+<div id="gpa"></div>
+
+<button class="printBtn" onclick="window.print()">
+تحميل / طباعة النتيجة PDF
+</button>
+
+<script>
+
+let seat=localStorage.getItem("seat")
+
+document.getElementById("seatNo").innerHTML="رقم الجلوس: "+seat
+
+let subjects=[
+"رسم هندسي 1",
+"فيزياء 1",
+"انجليزي 1",
+"جبر وتفاضل",
+"استاتيكا",
+"مبادئ التصنيع و الالة"
+]
+
+let gradesList=["امتياز","جيد جدا"]
+
+function randomGrade(){
+return gradesList[Math.floor(Math.random()*gradesList.length)]
+}
+
+function randomName(){
+
+let first=[
+"محمد","احمد","محمود","عبدالله","يوسف","علي","مصطفى","عبدالرحمن"
+]
+
+let second=[
+"حسن","حسين","خالد","سعيد","محمود","ابراهيم","عبدالله","مصطفى"
+]
+
+let third=[
+"محمد","احمد","حسن","عبدالله","سيد","فتحي","سالم","جابر"
+]
+
+let fourth=[
+"علي","عبدالله","حسين","محمود","سعيد","خليل","عبدالحميد","صالح"
+]
+
+let name=
+first[Math.floor(Math.random()*first.length)]+" "+
+second[Math.floor(Math.random()*second.length)]+" "+
+third[Math.floor(Math.random()*third.length)]+" "+
+fourth[Math.floor(Math.random()*fourth.length)]
+
+return name
+}
+
+if(seat==7){
+
+document.getElementById("name").innerHTML="اسم الطالب: إبراهيم محمد شعبان سعد المكاوي"
+
+document.getElementById("code").innerHTML="الكود: 20251054"
+
+document.getElementById("gpa").innerHTML="GPA : 2.88"
+
+}else{
+
+document.getElementById("name").innerHTML="اسم الطالب: "+randomName()
+
+document.getElementById("code").innerHTML="الكود: "+Math.floor(20250000+Math.random()*5000)
+
+document.getElementById("gpa").innerHTML="GPA : "+(2+Math.random()).toFixed(2)
+
+}
+
+let table=""
+
+subjects.forEach(sub=>{
+
+table+=`
+<tr>
+<td>${sub}</td>
+<td>${randomGrade()}</td>
+</tr>
+`
+
+})
+
+document.getElementById("grades").innerHTML=table
+
+</script>
+
+</body>
+</html>

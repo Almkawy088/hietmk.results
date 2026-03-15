@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>نتيجة المعهد العالي للهندسة والتكنولوجيا بالمحلة الكبرى</title>
+
+<style>
+
+body{
+font-family:Tahoma;
+background:#eef2f7;
+text-align:center;
+}
+
+.box{
+background:white;
+width:400px;
+padding:40px;
+margin:auto;
+margin-top:150px;
+border-radius:10px;
+box-shadow:0 0 15px rgba(0,0,0,0.15);
+}
+
+h2{
+color:#003366;
+}
+
+input{
+width:250px;
+padding:12px;
+font-size:18px;
+margin-top:15px;
+}
+
+button{
+margin-top:20px;
+padding:12px 25px;
+font-size:18px;
+background:#003366;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#0055aa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>استعلام نتيجة الطالب</h2>
+
+<input id="seat" type="number" placeholder="ادخل رقم الجلوس">
+
+<br>
+
+<button onclick="go()">عرض النتيجة</button>
+
+</div>
+
+<script>
+
+function go(){
+
+let seat=document.getElementById("seat").value
+
+localStorage.setItem("seat",seat)
+
+window.location="result.html"
+
+}
+
+</script>
+
+</body>
+</html>
