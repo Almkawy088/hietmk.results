@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>نتيجة الطالب</title>
+
 <style>
 body{font-family:Tahoma;background:#eef2f7;text-align:center;}
 .header{background:#003366;color:white;padding:20px;font-size:22px;}
@@ -14,6 +15,7 @@ th{background:#003366;color:white;}
 #gpa{margin-top:20px;font-size:22px;font-weight:bold;}
 .printBtn{margin-top:20px;padding:12px 25px;font-size:18px;background:#0a7d34;color:white;border:none;cursor:pointer;border-radius:5px;}
 </style>
+
 </head>
 <body>
 
@@ -38,9 +40,12 @@ th{background:#003366;color:white;}
 
 <div id="gpa"></div>
 
-<button class="printBtn" onclick="window.print()">تحميل / طباعة النتيجة PDF</button>
+<button class="printBtn" onclick="window.print()">
+تحميل / طباعة النتيجة PDF
+</button>
 
 <script>
+
 let seat=localStorage.getItem("seat")
 document.getElementById("seatNo").innerHTML="رقم الجلوس: "+seat
 
@@ -56,47 +61,94 @@ let subjects=[
 let gradesList=["امتياز","جيد جدا"]
 
 function randomGrade(){
-  return gradesList[Math.floor(Math.random()*gradesList.length)]
+return gradesList[Math.floor(Math.random()*gradesList.length)]
 }
 
-// اسم رباعي عشوائي
 function randomName(){
-  let first=["محمد","احمد","محمود","عبدالله","يوسف","علي","مصطفى","عبدالرحمن"]
-  let second=["حسن","حسين","خالد","سعيد","محمود","ابراهيم","عبدالله","مصطفى"]
-  let third=["محمد","احمد","حسن","عبدالله","سيد","فتحي","سالم","جابر"]
-  let fourth=["علي","عبدالله","حسين","محمود","سعيد","خليل","عبدالحميد","صالح"]
-  return first[Math.floor(Math.random()*first.length)]+" "+
-         second[Math.floor(Math.random()*second.length)]+" "+
-         third[Math.floor(Math.random()*third.length)]+" "+
-         fourth[Math.floor(Math.random()*fourth.length)]
+
+let first=["محمد","احمد","محمود","عبدالله","يوسف","علي","مصطفى","عبدالرحمن"]
+let second=["حسن","حسين","خالد","سعيد","محمود","ابراهيم","عبدالله","مصطفى"]
+let third=["محمد","احمد","حسن","عبدالله","سيد","فتحي","سالم","جابر"]
+let fourth=["علي","عبدالله","حسين","محمود","سعيد","خليل","عبدالحميد","صالح"]
+
+return first[Math.floor(Math.random()*first.length)]+" "+
+second[Math.floor(Math.random()*second.length)]+" "+
+third[Math.floor(Math.random()*third.length)]+" "+
+fourth[Math.floor(Math.random()*fourth.length)]
 }
 
+// الطالب 7
 if(seat==7){
-    // نتيجة ثابتة
-    document.getElementById("name").innerHTML="اسم الطالب: إبراهيم محمد شعبان سعد المكاوي"
-    document.getElementById("code").innerHTML="الكود: 20251054"
-    document.getElementById("gpa").innerHTML="GPA : 3.23"
 
-    let grades=["امتياز","امتياز","جيد جدا","امتياز","امتياز","جيد جدا"]
+showResult(
+"إبراهيم محمد شعبان سعد المكاوي",
+"20251054",
+["امتياز","امتياز","جيد جدا","امتياز","امتياز","جيد جدا"],
+"2.88"
+)
 
-    let table=""
-    for(let i=0;i<subjects.length;i++){
-        table+=`<tr><td>${subjects[i]}</td><td>${grades[i]}</td></tr>`
-    }
-    document.getElementById("grades").innerHTML=table
+}
+
+// الطالب 14
+else if(seat==14){
+
+showResult(
+"احمد صوفت رمزي محمد بسيوني",
+"20251014",
+["امتياز","جيد جدا","امتياز","جيد جدا","امتياز","امتياز"],
+"2.97"
+)
+
+}
+
+else{
+
+let key="result_"+seat
+let saved=localStorage.getItem(key)
+
+if(saved){
+
+let data=JSON.parse(saved)
+showResult(data.name,data.code,data.grades,data.gpa)
 
 }else{
-    // نتائج عشوائية لأي رقم غير 7
-    document.getElementById("name").innerHTML="اسم الطالب: "+randomName()
-    document.getElementById("code").innerHTML="الكود: "+(20250000+Math.floor(Math.random()*5000))
-    document.getElementById("gpa").innerHTML="GPA : "+(2+Math.random()).toFixed(2)
 
-    let table=""
-    for(let i=0;i<subjects.length;i++){
-        table+=`<tr><td>${subjects[i]}</td><td>${randomGrade()}</td></tr>`
-    }
-    document.getElementById("grades").innerHTML=table
+let name=randomName()
+let code=20250000+Math.floor(Math.random()*5000)
+let gpa=(2+Math.random()).toFixed(2)
+
+let grades=[]
+
+for(let i=0;i<subjects.length;i++){
+grades.push(randomGrade())
 }
+
+let data={name:name,code:code,grades:grades,gpa:gpa}
+
+localStorage.setItem(key,JSON.stringify(data))
+
+showResult(name,code,grades,gpa)
+
+}
+
+}
+
+function showResult(name,code,grades,gpa){
+
+document.getElementById("name").innerHTML="اسم الطالب: "+name
+document.getElementById("code").innerHTML="الكود: "+code
+document.getElementById("gpa").innerHTML="GPA : "+gpa
+
+let table=""
+
+for(let i=0;i<subjects.length;i++){
+table+=`<tr><td>${subjects[i]}</td><td>${grades[i]}</td></tr>`
+}
+
+document.getElementById("grades").innerHTML=table
+
+}
+
 </script>
 
 </body>
