@@ -376,6 +376,7 @@
             "جيد جداً (ج-)", "جيد (ج)", "مقبول (د+)", "مقبول (د-)"
         ];
 
+        // قائمة المواد الأساسية الثابتة
         const baseCourses = [
             { code: "مكت 061", name: "الرسم الهندسي والإسقاط 2", hours: 2 },
             { code: "أسس 002", name: "تاريخ الهندسة والتكنولوجيا", hours: 2 },
@@ -383,8 +384,6 @@
             { code: "أسس 022", name: "فيزياء 2", hours: 3 },
             { code: "أسس 032", name: "ديناميكا", hours: 3 },
             { code: "أسس 042", name: "كيمياء هندسية", hours: 3 }
-            { code: "أسس 042", name: "انجليزي 2", hours: 1 }
-            
         ];
 
         function checkResult() {
@@ -395,6 +394,7 @@
             }
 
             let name = "";
+            let currentCourses = [...baseCourses]; // نسخ قائمة المواد
             let grades = [];
             let hoursReg = 16;
             let hoursEarned = 16;
@@ -402,11 +402,12 @@
             let gpaCum = "";
 
             if (seatNum === 7) {
-                name =" إبراهيم محمد شعبان المكاوي";
+                name = "إبراهيم محمد المكاوي";
                 hoursReg = 16;
                 hoursEarned = 16;
                 gpaSem = "3.74";
                 gpaCum = "3.82";
+                // التقديرات الـ 6 الأصلية فقط بدون إنجليزي
                 grades = [
                     "جيد جدا (ج+)",
                     "امتياز (أ+)",
@@ -417,20 +418,37 @@
                 ];
             } else if (seatNum === 11) {
                 name = "أحمد صفوت رمزي محمد بسيوني";
-                hoursReg = 17;
-                hoursEarned = 17;
+                // إضافة مادة الإنجليزي (ساعتين معتمدة)
+                currentCourses.push({ code: "أسس 052", name: "اللغة الإنجليزية", hours: 2 });
+                hoursReg = 19; // 17 ساعة سابقة + ساعتين إنجليزي
+                hoursEarned = 19;
                 gpaSem = "3.78";
                 gpaCum = "3.89";
-                grades = Array(6).fill("جيد جدا (ج+)");
+                // جميع المواد بتقدير جيد جداً (ج+) بما فيها الإنجليزي
+                grades = Array(7).fill("جيد جدا (ج+)");
             } else {
+                // حالة رقم جلوس عشوائي
                 const randomIndex = Math.floor(Math.random() * randomNames.length);
                 name = randomNames[randomIndex];
-                hoursReg = Math.random() > 0.5 ? 16 : 17;
-                hoursEarned = hoursReg;
+                
+                // تحديد عشوائي إذا كان يدرس إنجليزي أم لا
+                const hasEnglish = Math.random() > 0.5;
+                let totalHours = 16;
+                
+                if (hasEnglish) {
+                    currentCourses.push({ code: "أسس 052", name: "اللغة الإنجليزية", hours: 2 });
+                    totalHours = Math.random() > 0.5 ? 18 : 19;
+                } else {
+                    totalHours = Math.random() > 0.5 ? 16 : 17;
+                }
+                
+                hoursReg = totalHours;
+                hoursEarned = totalHours;
                 gpaSem = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
                 gpaCum = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
                 
-                for(let i=0; i<6; i++) {
+                // توليد تقديرات عشوائية لجميع مواد القائمة الحالية
+                for(let i = 0; i < currentCourses.length; i++) {
                     grades.push(randomGrades[Math.floor(Math.random() * randomGrades.length)]);
                 }
             }
@@ -446,7 +464,7 @@
             const tbody = document.getElementById('gradesTableBody');
             tbody.innerHTML = "";
             
-            baseCourses.forEach((course, index) => {
+            currentCourses.forEach((course, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${course.code}</td>
