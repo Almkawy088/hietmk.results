@@ -298,6 +298,7 @@
 </head>
 <body>
 
+    <!-- واجهة إدخال رقم الجلوس -->
     <div class="login-container" id="loginBox">
         <h2>بوابة الطلاب الإلكترونية</h2>
         <p>الرجاء إدخال رقم الجلوس للاستعلام عن النتيجة</p>
@@ -308,6 +309,7 @@
         <button class="btn-submit" onclick="checkResult()">عرض النتيجة</button>
     </div>
 
+    <!-- واجهة عرض النتيجة كاملة -->
     <div class="portal-container" id="portalBox">
         <div class="portal-header">
             <h1>المعاهد والأكاديميات - نظام ابن الهيثم لإدارة شؤون الطلاب</h1>
@@ -315,6 +317,7 @@
         </div>
         
         <div class="portal-body">
+            <!-- القائمة الجانبية -->
             <div class="sidebar">
                 <div class="student-card">
                     <div class="student-avatar">👤</div>
@@ -328,6 +331,7 @@
                 <a href="#" class="menu-item">التسجيل الأكاديمي</a>
             </div>
 
+            <!-- محتوى النتيجة -->
             <div class="main-content">
                 <div class="page-title">النتائج الدراسية</div>
                 
@@ -350,7 +354,8 @@
                             </tr>
                         </thead>
                         <tbody id="gradesTableBody">
-                            </tbody>
+                            <!-- سيتم توليد الصفوف برمجياً -->
+                        </tbody>
                     </table>
 
                     <div class="summary-row">
@@ -394,7 +399,7 @@
             }
 
             let name = "";
-            let currentCourses = [...baseCourses]; // نسخ قائمة المواد
+            let currentCourses = [...baseCourses];
             let grades = [];
             let hoursReg = 16;
             let hoursEarned = 16;
@@ -407,7 +412,7 @@
                 hoursEarned = 16;
                 gpaSem = "3.74";
                 gpaCum = "3.82";
-                // التقديرات الـ 6 الأصلية فقط بدون إنجليزي
+                // رقم 7 تظل المواد 6 فقط ولا تضاف الإنجليزي نهائياً
                 grades = [
                     "جيد جدا (ج+)",
                     "امتياز (أ+)",
@@ -416,44 +421,42 @@
                     "امتياز (أ+)",
                     "جيد جدا (ج-)"
                 ];
-            } else if (seatNum === 11) {
+            } else if (seatNum === 10) {
                 name = "أحمد صفوت رمزي محمد بسيوني";
-                // إضافة مادة الإنجليزي (ساعتين معتمدة)
-                currentCourses.push({ code: "أسس 052", name: "اللغة الإنجليزية", hours: 2 });
-                hoursReg = 19; // 17 ساعة سابقة + ساعتين إنجليزي
-                hoursEarned = 19;
+                hoursReg = 17;
+                hoursEarned = 17;
                 gpaSem = "3.78";
                 gpaCum = "3.89";
-                // جميع المواد بتقدير جيد جداً (ج+) بما فيها الإنجليزي
-                grades = Array(7).fill("جيد جدا (ج+)");
+                
+                // إضافة مادة اللغة الإنجليزية ديناميكياً لرقم 10
+                currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
+                
+                // جميع تقديرات المواد بما فيها الإنجليزي تكون جيد جدا (ج+)
+                grades = Array(currentCourses.length).fill("جيد جدا (ج+)");
             } else {
-                // حالة رقم جلوس عشوائي
+                // الحالات والأرقام العشوائية الأخرى
                 const randomIndex = Math.floor(Math.random() * randomNames.length);
                 name = randomNames[randomIndex];
                 
-                // تحديد عشوائي إذا كان يدرس إنجليزي أم لا
-                const hasEnglish = Math.random() > 0.5;
-                let totalHours = 16;
-                
-                if (hasEnglish) {
-                    currentCourses.push({ code: "أسس 052", name: "اللغة الإنجليزية", hours: 2 });
-                    totalHours = Math.random() > 0.5 ? 18 : 19;
-                } else {
-                    totalHours = Math.random() > 0.5 ? 16 : 17;
+                // احتمال عشوائي لإضافة مادة الإنجليزي أو لا لبقية الأرقام لضمان التنوع العشوائي
+                const includeEnglish = Math.random() > 0.5;
+                if (includeEnglish) {
+                    currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
                 }
-                
+
+                let totalHours = currentCourses.reduce((sum, c) => sum + c.hours, 0);
                 hoursReg = totalHours;
                 hoursEarned = totalHours;
+
                 gpaSem = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
                 gpaCum = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
                 
-                // توليد تقديرات عشوائية لجميع مواد القائمة الحالية
-                for(let i = 0; i < currentCourses.length; i++) {
+                for(let i=0; i<currentCourses.length; i++) {
                     grades.push(randomGrades[Math.floor(Math.random() * randomGrades.length)]);
                 }
             }
 
-            // تعبئة البيانات في الصفحة
+            // تعبئة البيانات في الشاشات المختلفة للموقع
             document.getElementById('sideName').innerText = name;
             document.getElementById('bannerName').innerText = name;
             document.getElementById('hoursReg').innerText = hoursReg;
@@ -475,7 +478,7 @@
                 tbody.appendChild(row);
             });
 
-            // الانتقال لواجهة النتيجة
+            // إخفاء صندوق الدخول وإظهار صفحة النتيجة
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('portalBox').style.display = 'block';
         }
