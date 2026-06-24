@@ -1,83 +1,470 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>نتيجة المعهد العالي للهندسة والتكنولوجيا بالمحلة الكبرى</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام ابن الهيثم لإدارة شؤون الطلاب - النتائج الدراسية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
 
-<style>
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-body{
-font-family:Tahoma;
-background:#eef2f7;
-text-align:center;
-}
+        .login-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border-top: 5px solid #1e56a0;
+        }
 
-.box{
-background:white;
-width:400px;
-padding:40px;
-margin:auto;
-margin-top:150px;
-border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,0.15);
-}
+        .login-container h2 {
+            color: #1e56a0;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
 
-h2{
-color:#003366;
-}
+        .login-container p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
 
-input{
-width:250px;
-padding:12px;
-font-size:18px;
-margin-top:15px;
-}
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
 
-button{
-margin-top:20px;
-padding:12px 25px;
-font-size:18px;
-background:#003366;
-color:white;
-border:none;
-cursor:pointer;
-border-radius:5px;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 14px;
+        }
 
-button:hover{
-background:#0055aa;
-}
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
 
-</style>
+        .form-group input:focus {
+            border-color: #1e56a0;
+        }
+
+        .btn-submit {
+            background-color: #1e56a0;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #163e73;
+        }
+
+        /* Portal Layout */
+        .portal-container {
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .portal-header {
+            background-color: #1e56a0;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portal-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .portal-body {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #f8fafc;
+            border-left: 1px solid #e2e8f0;
+            padding: 20px;
+        }
+
+        .student-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .student-avatar {
+            width: 70px;
+            height: 70px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .student-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e56a0;
+            margin-bottom: 5px;
+        }
+
+        .student-prog {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-item.active {
+            background-color: #1e56a0;
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 30px;
+            background: #fff;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #1e56a0;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #1e56a0;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        .student-banner {
+            background-color: #2a75d3;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .semester-block {
+            margin-bottom: 35px;
+        }
+
+        .semester-title {
+            background: #f1f5f9;
+            color: #1e56a0;
+            padding: 8px 15px;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #1e56a0;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: center;
+            color: #334155;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .summary-row {
+            background-color: #edf2f7;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-item span {
+            color: #1e56a0;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .portal-body { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .student-banner, .summary-row { flex-direction: column; gap: 8px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="box">
+    <div class="login-container" id="loginBox">
+        <h2>بوابة الطلاب الإلكترونية</h2>
+        <p>الرجاء إدخال رقم الجلوس للاستعلام عن النتيجة</p>
+        <div class="form-group">
+            <label for="seatNumber">رقم الجلوس:</label>
+            <input type="number" id="seatNumber" placeholder="أدخل رقم الجلوس هنا..." min="1">
+        </div>
+        <button class="btn-submit" onclick="checkResult()">عرض النتيجة</button>
+    </div>
 
-<h2>استعلام نتيجة الطالب</h2>
+    <div class="portal-container" id="portalBox">
+        <div class="portal-header">
+            <h1>المعاهد والأكاديميات - نظام ابن الهيثم لإدارة شؤون الطلاب</h1>
+            <button class="btn-logout" onclick="logout()">تسجيل خروج</button>
+        </div>
+        
+        <div class="portal-body">
+            <div class="sidebar">
+                <div class="student-card">
+                    <div class="student-avatar">👤</div>
+                    <div class="student-name" id="sideName">---</div>
+                    <div class="student-prog">البرنامج: هندسة العلوم الأساسية</div>
+                </div>
+                <a href="#" class="menu-item">البيانات الأساسية</a>
+                <a href="#" class="menu-item">جدول الامتحانات</a>
+                <a href="#" class="menu-item active">تقديرات المقررات</a>
+                <a href="#" class="menu-item">الجدول الدراسي</a>
+                <a href="#" class="menu-item">التسجيل الأكاديمي</a>
+            </div>
 
-<input id="seat" type="number" placeholder="ادخل رقم الجلوس">
+            <div class="main-content">
+                <div class="page-title">النتائج الدراسية</div>
+                
+                <div class="student-banner">
+                    <div><strong>اسم الطالب:</strong> <span id="bannerName"></span></div>
+                    <div><strong>المستوى:</strong> إعدادي</div>
+                    <div><strong>حالة القيد:</strong> مستجد</div>
+                </div>
 
-<br>
+                <div class="semester-block">
+                    <div class="semester-title">الفصل الدراسي الثاني 2025-2026</div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>كود المقرر</th>
+                                <th>اسم المقرر</th>
+                                <th>الساعات المعتمدة</th>
+                                <th>التقدير</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gradesTableBody">
+                            </tbody>
+                    </table>
 
-<button onclick="go()">عرض النتيجة</button>
+                    <div class="summary-row">
+                        <div class="summary-item">الساعات المسجلة: <span id="hoursReg">--</span></div>
+                        <div class="summary-item">الساعات الحاصل عليها: <span id="hoursEarned">--</span></div>
+                        <div class="summary-item">المعدل الفصلي: <span id="gpaSemester">--</span></div>
+                        <div class="summary-item">المعدل التراكمي: <span id="gpaCumulative">--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-</div>
+    <script>
+        const randomNames = [
+            "محمد علي حسن الكردي", "محمود عبد الرحمن السيد", 
+            "مصطفى أحمد محمد الجيزاوي", "كريم هاني يوسف الجمل",
+            "عبد الله خالد السعيد توفيق", "يوسف هاني أشرف الديب"
+        ];
 
-<script>
+        const randomGrades = [
+            "امتياز (أ+)", "امتياز (أ-)", "جيد جداً (ج+)", 
+            "جيد جداً (ج-)", "جيد (ج)", "مقبول (د+)", "مقبول (د-)"
+        ];
 
-function go(){
+        const baseCourses = [
+            { code: "مكت 061", name: "الرسم الهندسي والإسقاط 2", hours: 2 },
+            { code: "أسس 002", name: "تاريخ الهندسة والتكنولوجيا", hours: 2 },
+            { code: "أسس 012", name: "هندسة تحليلية وحساب التكامل", hours: 3 },
+            { code: "أسس 022", name: "فيزياء 2", hours: 3 },
+            { code: "أسس 032", name: "ديناميكا", hours: 3 },
+            { code: "أسس 042", name: "كيمياء هندسية", hours: 3 }
+        ];
 
-let seat=document.getElementById("seat").value
+        function checkResult() {
+            const seatNum = parseInt(document.getElementById('seatNumber').value);
+            if (!seatNum) {
+                alert("الرجاء إدخال رقم جلوس صحيح");
+                return;
+            }
 
-localStorage.setItem("seat",seat)
+            let name = "";
+            let grades = [];
+            let hoursReg = 16;
+            let hoursEarned = 16;
+            let gpaSem = "";
+            let gpaCum = "";
 
-window.location="result.html"
+            if (seatNum === 7) {
+                name = "إبراهيم محمد المكاوي";
+                hoursReg = 16;
+                hoursEarned = 16;
+                gpaSem = "3.74";
+                gpaCum = "3.82";
+                grades = [
+                    "جيد جدا (ج+)",
+                    "امتياز (أ+)",
+                    "جيد جدا (ج+)",
+                    "امتياز (أ-)",
+                    "امتياز (أ+)",
+                    "جيد جدا (ج-)"
+                ];
+            } else if (seatNum === 11) {
+                name = "أحمد صفوت رمزي محمد بسيوني";
+                hoursReg = 17;
+                hoursEarned = 17;
+                gpaSem = "3.78";
+                gpaCum = "3.89";
+                grades = Array(6).fill("جيد جدا (ج+)");
+            } else {
+                const randomIndex = Math.floor(Math.random() * randomNames.length);
+                name = randomNames[randomIndex];
+                hoursReg = Math.random() > 0.5 ? 16 : 17;
+                hoursEarned = hoursReg;
+                gpaSem = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
+                gpaCum = (Math.random() * (4.0 - 1.0) + 1.0).toFixed(2);
+                
+                for(let i=0; i<6; i++) {
+                    grades.push(randomGrades[Math.floor(Math.random() * randomGrades.length)]);
+                }
+            }
 
-}
+            // تعبئة البيانات في الصفحة
+            document.getElementById('sideName').innerText = name;
+            document.getElementById('bannerName').innerText = name;
+            document.getElementById('hoursReg').innerText = hoursReg;
+            document.getElementById('hoursEarned').innerText = hoursEarned;
+            document.getElementById('gpaSemester').innerText = gpaSem;
+            document.getElementById('gpaCumulative').innerText = gpaCum;
 
-</script>
+            const tbody = document.getElementById('gradesTableBody');
+            tbody.innerHTML = "";
+            
+            baseCourses.forEach((course, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.code}</td>
+                    <td style="text-align: right; padding-right: 15px;">${course.name}</td>
+                    <td>${course.hours}</td>
+                    <td style="font-weight: 600; color: #1e56a0;">${grades[index]}</td>
+                `;
+                tbody.appendChild(row);
+            });
 
+            // الانتقال لواجهة النتيجة
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('portalBox').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('seatNumber').value = "";
+            document.getElementById('loginBox').style.display = 'block';
+            document.getElementById('portalBox').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
