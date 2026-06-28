@@ -376,7 +376,6 @@
             "جيد جداً (ج-)", "جيد (ج)", "مقبول (د+)", "مقبول (د-)"
         ];
 
-        // قائمة المواد الأساسية الثابتة
         const baseCourses = [
             { code: "مكت 061", name: "الرسم الهندسي والإسقاط 2", hours: 2 },
             { code: "أسس 002", name: "تاريخ الهندسة والتكنولوجيا", hours: 2 },
@@ -408,8 +407,8 @@
                 gpaSem = "3.74";
                 gpaCum = "3.82";
                 
-                // إضافة مادة الإنجليزية لجدولك بناءً على طلبك المعدل
-                currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
+                // تعديل اسم المادة إلى انجليزي 2
+                currentCourses.push({ code: "أنس 011", name: "انجليزي 2", hours: 2 });
                 
                 grades = [
                     "جيد جدا (ج+)", // الرسم الهندسي والإسقاط 2
@@ -417,8 +416,8 @@
                     "جيد جدا (ج+)", // هندسة تحليلية وحساب التكامل
                     "امتياز (أ-)",   // فيزياء 2
                     "امتياز (أ+)",   // ديناميكا
-                    "جيد جدا (ج-)", // كيمياء هندسية
-                    "جيد (ج-)"      // اللغة الإنجليزية
+                    "جيد جدا (ج+)", // كيمياء هندسية (تعديل التقدير إلى ج+)
+                    "جيد (ج-)"      // انجليزي 2
                 ];
             } else if (seatNum === 10) {
                 name = "أحمد صفوت رمزي محمد بسيوني";
@@ -427,7 +426,8 @@
                 gpaSem = "3.78";
                 gpaCum = "3.89";
                 
-                currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
+                // مادة انجليزي 2
+                currentCourses.push({ code: "أنس 011", name: "انجليزي 2", hours: 2 });
                 grades = Array(currentCourses.length).fill("جيد جدا (ج+)");
             } else {
                 const randomIndex = Math.floor(Math.random() * randomNames.length);
@@ -435,7 +435,7 @@
                 
                 const includeEnglish = Math.random() > 0.5;
                 if (includeEnglish) {
-                    currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
+                    currentCourses.push({ code: "أنس 011", name: "انجليزي 2", hours: 2 });
                 }
 
                 let totalHours = currentCourses.reduce((sum, c) => sum + c.hours, 0);
@@ -458,28 +458,3 @@
             document.getElementById('gpaCumulative').innerText = gpaCum;
 
             const tbody = document.getElementById('gradesTableBody');
-            tbody.innerHTML = "";
-            
-            currentCourses.forEach((course, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${course.code}</td>
-                    <td style="text-align: right; padding-right: 15px;">${course.name}</td>
-                    <td>${course.hours}</td>
-                    <td style="font-weight: 600; color: #1e56a0;">${grades[index]}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            document.getElementById('loginBox').style.display = 'none';
-            document.getElementById('portalBox').style.display = 'block';
-        }
-
-        function logout() {
-            document.getElementById('seatNumber').value = "";
-            document.getElementById('loginBox').style.display = 'block';
-            document.getElementById('portalBox').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
