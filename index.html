@@ -298,7 +298,6 @@
 </head>
 <body>
 
-    <!-- واجهة إدخال رقم الجلوس -->
     <div class="login-container" id="loginBox">
         <h2>بوابة الطلاب الإلكترونية</h2>
         <p>الرجاء إدخال رقم الجلوس للاستعلام عن النتيجة</p>
@@ -309,7 +308,6 @@
         <button class="btn-submit" onclick="checkResult()">عرض النتيجة</button>
     </div>
 
-    <!-- واجهة عرض النتيجة كاملة -->
     <div class="portal-container" id="portalBox">
         <div class="portal-header">
             <h1>المعاهد والأكاديميات - نظام ابن الهيثم لإدارة شؤون الطلاب</h1>
@@ -317,7 +315,6 @@
         </div>
         
         <div class="portal-body">
-            <!-- القائمة الجانبية -->
             <div class="sidebar">
                 <div class="student-card">
                     <div class="student-avatar">👤</div>
@@ -331,7 +328,6 @@
                 <a href="#" class="menu-item">التسجيل الأكاديمي</a>
             </div>
 
-            <!-- محتوى النتيجة -->
             <div class="main-content">
                 <div class="page-title">النتائج الدراسية</div>
                 
@@ -354,8 +350,7 @@
                             </tr>
                         </thead>
                         <tbody id="gradesTableBody">
-                            <!-- سيتم توليد الصفوف برمجياً -->
-                        </tbody>
+                            </tbody>
                     </table>
 
                     <div class="summary-row">
@@ -412,14 +407,18 @@
                 hoursEarned = 16;
                 gpaSem = "3.74";
                 gpaCum = "3.82";
-                // رقم 7 تظل المواد 6 فقط ولا تضاف الإنجليزي نهائياً
+                
+                // إضافة مادة الإنجليزية لجدولك بناءً على طلبك المعدل
+                currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
+                
                 grades = [
-                    "جيد جدا (ج+)",
-                    "امتياز (أ+)",
-                    "جيد جدا (ج+)",
-                    "امتياز (أ-)",
-                    "امتياز (أ+)",
-                    "جيد جدا (ج-)"
+                    "جيد جدا (ج+)", // الرسم الهندسي والإسقاط 2
+                    "امتياز (أ+)",   // تاريخ الهندسة والتكنولوجيا
+                    "جيد جدا (ج+)", // هندسة تحليلية وحساب التكامل
+                    "امتياز (أ-)",   // فيزياء 2
+                    "امتياز (أ+)",   // ديناميكا
+                    "جيد جدا (ج-)", // كيمياء هندسية
+                    "جيد (ج-)"      // اللغة الإنجليزية
                 ];
             } else if (seatNum === 10) {
                 name = "أحمد صفوت رمزي محمد بسيوني";
@@ -428,17 +427,12 @@
                 gpaSem = "3.78";
                 gpaCum = "3.89";
                 
-                // إضافة مادة اللغة الإنجليزية ديناميكياً لرقم 10
                 currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
-                
-                // جميع تقديرات المواد بما فيها الإنجليزي تكون جيد جدا (ج+)
                 grades = Array(currentCourses.length).fill("جيد جدا (ج+)");
             } else {
-                // الحالات والأرقام العشوائية الأخرى
                 const randomIndex = Math.floor(Math.random() * randomNames.length);
                 name = randomNames[randomIndex];
                 
-                // احتمال عشوائي لإضافة مادة الإنجليزي أو لا لبقية الأرقام لضمان التنوع العشوائي
                 const includeEnglish = Math.random() > 0.5;
                 if (includeEnglish) {
                     currentCourses.push({ code: "أنس 011", name: "اللغة الإنجليزية", hours: 2 });
@@ -456,7 +450,6 @@
                 }
             }
 
-            // تعبئة البيانات في الشاشات المختلفة للموقع
             document.getElementById('sideName').innerText = name;
             document.getElementById('bannerName').innerText = name;
             document.getElementById('hoursReg').innerText = hoursReg;
@@ -478,7 +471,6 @@
                 tbody.appendChild(row);
             });
 
-            // إخفاء صندوق الدخول وإظهار صفحة النتيجة
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('portalBox').style.display = 'block';
         }
