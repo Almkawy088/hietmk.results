@@ -458,3 +458,28 @@
             document.getElementById('gpaCumulative').innerText = gpaCum;
 
             const tbody = document.getElementById('gradesTableBody');
+            tbody.innerHTML = "";
+            
+            currentCourses.forEach((course, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.code}</td>
+                    <td style="text-align: right; padding-right: 15px;">${course.name}</td>
+                    <td>${course.hours}</td>
+                    <td style="font-weight: 600; color: #1e56a0;">${grades[index]}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('portalBox').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('seatNumber').value = "";
+            document.getElementById('loginBox').style.display = 'block';
+            document.getElementById('portalBox').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
